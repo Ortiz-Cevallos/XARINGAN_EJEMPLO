@@ -1,0 +1,522 @@
+---
+title: "PLAN DE TRABAJO"
+subtitle: 
+author: "GRUPO AD HOC DE OFICIALES DE CUMPLIMIENTO "
+date: "25 de marzo 2021"
+#institute: (Logo.jpg)
+#knit: pagedown::chrome_print
+output:
+    xaringan::moon_reader:
+     transition: slide
+     lib_dir: libs
+     css: ["fc", "rutgers-fonts"]
+     nature:
+      #countdown: 60000
+      #autoplay: 30000
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+layout: true
+background-image: url(Logo.jpg)
+background-position: 95% 2.5% 
+background-size: 10%
+---
+
+**ÍNDICE**   
+1. [ANTECEDENTES](#id1)
+
+2. [MISIÓN Y VISIÓN](#id2)
+
+3. [OBJETIVOS ESTRATÉGICOS](#id3) 
+
+4. [PLAN DE TRABAJO](#id4)
+
+5. [ESTRATEGIA DE IMPLEMENTACIÓN](#id5)
+
+6. [GOBERNANZA](#id6)
+
+7. [QUÓRUM y SESIONES](#id7)
+
+8. [CRONOGRAMA DE DIVULGACIÓN DEL PLAN DE TRABAJO](#id8)
+---
+### ANTECEDENTES<a name="id1"></a>
+
+$$ $$
+
+El Consejo Monetario Centroamericano en su 285a Reunión (del 7 y 8 de marzo de 2019), acordó crear el **Grupo ad hoc de Oficiales de Cumplimiento de Bancos Centrales (GOC)**, con el objetivo de apoyar al Comité Técnico de Sistemas de Pagos en la adopción de las mejores prácticas para fortalecer las labores de prevención de lavado de activos, financiamiento al terrorismo y proliferación de armas de destrucción masiva (LD/FT/PADM) en el Sistema Regional de Pagos (SIPA). 
+
+En su primera reunión, el GOC, con base en el contenido del Plan Estratégico Institucional de la Secretaría Ejecutiva del CMCA para el período (2020-2024), inicia un proceso de definición de su propio **Plan Estratégico**, conteniendo su: *misión, visión, funciones, metodología de trabajo, gobernanza y programa de reuniones del GOC*.
+
+---
+### MISIÓN Y VISIÓN<a name="id2"></a>
+
+$$ $$
+
+*Proponer normas, políticas, procedimientos, metodologías, información y  buenas prácticas en materia de prevención de LD/FT/PADM para mitigar el riesgo que los Sistemas de Pago y procesos de los Bancos Centrales, sean utilizados para la realización de actividades ilícitas; contribuyendo de esta manera, a la integración y estabilidad económica y financiera de la región.*
+
+*Actuar con la mayor eficiencia en la ejecución de iniciativas que ayuden al CMCA, a sus Comités de Apoyos y los Bancos Centrales que lo integran, en materia de prevención LD/FT/PADM, de conformidad con los marcos normativos nacionales e internacionales.*
+
+---
+### OBJETIVOS ESTRATÉGICOS<a name="id3"></a>
+
+$$ $$
+
+*  Contribuir a la estabilidad macroeconómica y financiera regional mediante la coordinación de políticas para el fortalecimiento de los sistemas de pagos e infraestructuras del mercado financiero regional, por medio de la elaboración de estudios y normativas para la adecuada gestión de riesgos en materia de prevención de LD/FT/PADM en los Sistemas de Pago y procesos de los Bancos Centrales.
+
+*  Brindar asesoría técnica al CMCA, sus Comités de apoyo y Bancos Centrales miembros, en lo relacionado a la prevención de LD/FT/PADM.
+
+
+---
+### PLAN DE TRABAJO<a name="id4"></a>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library("zoo")
+library("xts")
+library(plotly)
+# Read in data
+df<-read.csv2("OE5.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+fig <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ fig <- add_trace(fig,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA: ", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+fig <- layout(fig,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+fig <- fig %>%
+  layout(title="1. Mantenimiento de un inventario de la <br> legislación de cada país miembro del CMCA.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+fig
+```
+
+
+---
+### PLAN DE TRABAJO (cont.)
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library("zoo")
+library("xts")
+library(plotly)
+# Read in data
+df<-read.csv2("OE1.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+fig <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ fig <- add_trace(fig,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA: ", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+fig <- layout(fig,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+fig <- fig %>%
+  layout(title="2. Proveer reportería de seguimiento  sobre noticias relacionadas <br> con los establecimientos financieros <br> con presencia regional.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+fig
+```
+---
+### PLAN DE TRABAJO (cont.)
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library("zoo")
+library("xts")
+library(plotly)
+# Read in data
+df<-read.csv2("OE2.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+fig2 <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ fig2 <- add_trace(fig2,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA:", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+fig2 <- layout(fig2,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+fig2 <- fig2 %>%
+  layout(title="3. Capacitar a miembros de Comités <br> de Apoyos del CMCA en temas de <br> prevención de LD/FT/PADM.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+fig2
+```
+
+---
+### PLAN DE TRABAJO (cont.)
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library("zoo")
+library("xts")
+library(plotly)
+# Read in data
+df<-read.csv2("OE3.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+fig3 <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ fig3 <- add_trace(fig3,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA:", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+fig3 <- layout(fig3,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+fig3 <- fig3 %>%
+  layout(title="4. Monitoreo de una lista internacional de <br> sancionados de las transacciones del SIPA.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+fig3
+```
+
+---
+### PLAN DE TRABAJO (cont.)
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library("zoo")
+library("xts")
+library(plotly)
+# Read in data
+df<-read.csv2("OE4.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+fig4 <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ fig4 <- add_trace(fig4,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA:", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+fig4 <- layout(fig4,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+fig4 <- fig4 %>%
+  layout(title="5. Desarrollo de capacitación para <br> oficiales de cumplimiento entre bancos centrales.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+fig4
+```
+---
+### ESTRATEGIA DE IMPLEMENTACIÓN<a name="id5"></a>
+La metodología que utilizará el GOC se basa en dos pilares fundamentales:
+
+* Regulación en materia de Prevención de LD/FT/PADM.
+* Enfoque basado en riesgo
+
+### GOBERNANZA<a name="id6"></a>
+
+* El GOC estará conformado por los Oficiales de Cumplimiento de cada uno de los Bancos Centrales de la región y la asistencia de un funcionario de la SECMCA.
+
+* La gobernanza del GOC contará con presidente, vicepresidente y secretario, quienes, a excepción de éste último, estarán en su cargo por un año de manera rotativa por país. En el caso del secretario le corresponderá a miembro del SECMCA designado para la coordinación del Grupo.
+
+* El período del presidente y vicepresidente podrá extenderse sí los miembros del Grupo así lo decidiesen.
+
+---
+### QUÓRUM y SESIONES<a name="id7"></a>
+
+$$ $$
+
+* El GOC sesionará de manera ordinaria por lo menos dos veces al año y extraordinariamente cuando el presidente convoque por iniciativa propia o por pedido de por lo menos dos de sus miembros.
+
+* El quórum para las sesiones se establecerá por lo menos con la mitad más uno de los miembros del GOC y los acuerdos y resoluciones se tomarán por simple mayoría; dado que el Grupo está compuesto por un número par, el Presidente tendrá la responsabilidad de resolver los casos en donde se dé un empate.
+
+---
+### Cronograma de divulgación del plan de trabajo<a name="id8"></a>
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+rm(list=ls()) #borrando todo
+dir<-"Z:\\Mis Documentos\\0_COMITÉ ADOC DE OFICIALES BANCARIOS\\REUNIÓN III GRUPO DE OFICIALES DE CUMPLIMIENTO"
+library(plotly)
+# Read in data
+df<-read.csv2("PLAN.csv", stringsAsFactors = F)
+df$Start <- as.Date(df$Start, format = "%d/%m/%Y")
+# Choose colors based on number of resources
+cols <- RColorBrewer::brewer.pal(length(unique(df$Resource)), name = "Set1")
+df$color <- factor(df$Resource, labels = cols)
+f <- list(
+        font  = list(
+      family  = "Futura Lt BT",
+        size  = 14),
+      bgcolor = "white",
+            x =100, 
+            y =0.75)
+# Initialize empty plot
+P <- plot_ly()
+
+# Each task is a separate trace
+# Each trace is essentially a thick line plot
+# x-axis ticks are dates and handled automatically
+
+for(i in 1:(nrow(df) - 1)){
+ P <- add_trace(P,
+                 x = c(df$Start[i], df$Start[i] + df$Duración[i]),  # x0, x1
+                 y = c(i, i),  # y0, y1
+                 mode = "lines",
+                 line = list(color = df$color[i], width = 20),
+                 showlegend = F,
+                 hoverinfo = "text",
+
+                 # Create custom hover text
+
+                 text = paste("FECHA:", df$Producto[i]),
+
+                  evaluate = T  # needed to avoid lazy loading
+  )
+}
+
+P <- layout(P,
+
+            # Axis options:
+            # 1. Remove gridlines
+            # 2. Customize y-axis tick labels and show task names instead of numbers
+
+            xaxis = list(showgrid = T, tickfont = list(color = "#084E9B"), 
+                         linecolor = toRGB("black"),
+  linewidth = 2, gridcolor = toRGB("gray"),
+  gridwidth = 0.25),
+
+            yaxis = list(showgrid = T, tickfont = list(color = "#084E9B"),
+                         tickmode = "array", tickvals = 1:nrow(df), ticktext = unique(df$Tareas),
+                         domain = c(0, 0.9),
+                         linecolor = toRGB("black"),
+  linewidth = 1, gridcolor = toRGB("gray"),
+  gridwidth = 0.25)
+            ) # Axis area color
+P <- P %>%
+  layout(title="Cronograma de divulgación <br> del plan de trabajo.", font=f)
+```
+```{r echo=FALSE, out.width = "675px", out.height="450px",fig.align='center', message=FALSE, warning=FALSE, cache=FALSE}
+P
+```
+
